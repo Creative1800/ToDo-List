@@ -1,25 +1,47 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
 
-function App() {
+import React from 'react';
+import { Provider } from 'react-redux'
+import './App.css';
+import MainScreen from './MainScreen/MainScreen';
+import Grid from '@mui/material/Grid';
+import Topbar from './Topbar/Topbar';
+import { createTheme } from '@mui/material/styles';
+import { ThemeProvider } from '@emotion/react';
+import { Container } from '@mui/material';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import { applyMiddleware, createStore } from 'redux';
+
+const store = createStore(() => [], {}, applyMiddleware())
+
+const App = () => {
+
+
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: '#262D32',
+      },
+      secondary: {
+        main: '#ccccc7',
+      },
+    },
+  });
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Provider store={store}>
+      <Router>
+        <div className='App'>
+          <ThemeProvider theme={theme}>
+            <Topbar />
+            <Container maxWidth="lg">
+              <Routes>
+                <Route path='/lists/:id' element={<MainScreen />} />
+              </Routes>
+            </Container>
+          </ThemeProvider>
+        </div>
+      </Router>
+    </Provider>
   );
 }
 
