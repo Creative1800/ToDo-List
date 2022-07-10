@@ -2,12 +2,16 @@ import React, { ChangeEvent, TextareaHTMLAttributes, useEffect, useState } from 
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { addList} from '../../redux/todoSlice';
 
 
 const AddList = () => {
   const [open, setOpen] = useState(false);
   const [listName, setListName] = useState('')
   const [isButtonDisabled, setIsButtonDisabled] = useState(true)
+
+  const dispatch = useDispatch() 
 
   useEffect(() => {
     listName.length > 0 ? setIsButtonDisabled(false) : setIsButtonDisabled(true)
@@ -24,14 +28,17 @@ const AddList = () => {
   const handleSubmit = (): void => {
     setOpen(false);
     
-    axios.post('https://62c88f300f32635590da738f.mockapi.io/Lists', {
+    /* axios.post('https://62c88f300f32635590da738f.mockapi.io/Lists', {
       "listName": listName,
       "tasks": []
     })
-    .then(res => console.log(res))
+    .then(res => console.log(res)) */
+
+    dispatch(addList({
+      title: listName,
+    }))
     
     setListName('');
-    // tu submitnut na Api
   }
 
   const handleChange = (e: ChangeEvent): void => {
