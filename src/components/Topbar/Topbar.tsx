@@ -1,27 +1,46 @@
 import React, { useEffect, useState } from 'react';
 import { Box } from '@mui/system';
-import { Tab, Tabs, tabsClasses} from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { Button, Divider, Tab, Tabs, tabsClasses} from '@mui/material';
+import { useNavigate, useParams } from 'react-router-dom';
 import AddList from '../AddList/AddList';
 import { useSelector, useDispatch } from 'react-redux';
-import { getListsAsync } from '../../redux/todoSlice';
+import { getListsAsync } from '../../redux/features/listsSlice';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { deleteListById } from '../../redux/features/listsSlice' 
 
 
 const Topbar = () => {
   const dispatch = useDispatch();
-  const listId:number = Number(window.location.pathname.charAt(window.location.pathname.length - 1))
-  let navigate = useNavigate()
-  const lists = useSelector((state: any) => state.todos);
+  let navigate = useNavigate();
+  const lists: (Array<{"listName": "","tasks": [],"id": ""}>) = useSelector((state: any) => state.lists);
+  const [ activeTabName, setActiveTabName ] = useState("");
+
+  const listId:number = Number(window.location.pathname.charAt(window.location.pathname.length - 1));
   const [tabsValue, setTabsValue] = useState(listId ? listId - 1 : 0);
-  //const [lists, setLists] = useState<Array<any>>([])
   
   const handleTabsChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabsValue(newValue);
   };
 
+  const deleteList = () => {
+    dispatch(
+      deleteListById({
+        listId: (tabsValue + 1),
+    }))
+  }
+
+
   useEffect(() => {
     dispatch(getListsAsync());
+
+    
   },[dispatch])
+
+  useEffect(() => {
+    if(lists.length > 0) {
+      setActiveTabName((lists[tabsValue].listName).toUpperCase())
+    }
+  }, [lists.length, tabsValue])
 
   /* useEffect(() => {
     axios.get('https://62c88f300f32635590da738f.mockapi.io/Lists')
@@ -41,6 +60,7 @@ const Topbar = () => {
     )
   })
 
+
   return (
     <>
       <Box sx={{ 
@@ -54,11 +74,8 @@ const Topbar = () => {
         <Box 
           display="flex"
           justifyContent="space-between"
-          width="100%"
-          sx={{ 
-            maxWidth: { sm: 980, lg: 1150 }, 
-            color: '#262D32' 
-          }}
+          width="95%"
+          maxWidth={1150}
         >
           <Tabs
             value={tabsValue}
@@ -79,6 +96,23 @@ const Topbar = () => {
             <AddList />
           </Box>
         </Box>
+      </Box>
+      <Box 
+        display='flex' 
+        flexDirection='column' 
+        margin='0 auto'
+        width='95%'
+        maxWidth={1150}
+        justifyContent="center"
+        marginTop='2em'
+        >
+          <Box display='flex' justifyContent='space-between' paddingBottom={1}>
+            <h2 style={{ margin: 0}}>{ activeTabName }</h2>
+            <Button onClick={deleteList} variant="outlined" startIcon={<DeleteIcon />}>
+              Delete
+            </Button>
+          </Box>
+        <Divider style={{width:'100%'}}/>
       </Box>
     </>
   );

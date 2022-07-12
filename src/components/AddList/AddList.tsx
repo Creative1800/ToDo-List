@@ -1,9 +1,9 @@
-import React, { ChangeEvent, TextareaHTMLAttributes, useEffect, useState } from 'react'
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from '@mui/material'
+import React, { ChangeEvent, useEffect, useState } from 'react'
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { addList} from '../../redux/todoSlice';
+import { addListAsync } from '../../redux/features/listsSlice';
 
 
 const AddList = () => {
@@ -34,8 +34,9 @@ const AddList = () => {
     })
     .then(res => console.log(res)) */
 
-    dispatch(addList({
-      title: listName,
+    dispatch(
+      addListAsync({
+        listName: listName,
     }))
     
     setListName('');
@@ -43,7 +44,6 @@ const AddList = () => {
 
   const handleChange = (e: ChangeEvent): void => {
     setListName((e.target as HTMLTextAreaElement).value)
-    console.log((e.target as HTMLTextAreaElement).value)
   }
 
   return (
