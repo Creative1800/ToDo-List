@@ -18,7 +18,7 @@ const App = () => {
       },
       secondary: {
         main: '#ccccc7',
-      },
+      }
     },
   });
 

@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from 'axios';
-import { useNavigate } from "react-router-dom";
 
 /* export const getTodosAsync: any = createAsyncThunk(
   'todos/getTodosAsync',
@@ -46,7 +45,6 @@ export const addListAsync: any = createAsyncThunk(
       return { list }
     }
   }
-
 )
 
 export const deleteListById: any = createAsyncThunk(
@@ -79,8 +77,6 @@ const listSlice = createSlice({
       state.push(action.payload.list)
     },
     [deleteListById.fulfilled as any]: (state: any, action: any) => {
-      const navigate = useNavigate()
-      navigate(`/lists/${action.payload-2}`)
       return state.filter((list: {"id": number}) => list.id !== action.payload)
     },
     

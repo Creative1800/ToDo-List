@@ -1,46 +1,89 @@
 import { Box } from '@mui/system'
 import React from 'react'
-import { Checkbox, IconButton } from '@mui/material';
+import { Checkbox, IconButton, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { deleteTaskById, toggleIsTaskDone } from '../../redux/features/todoSlice';
+import { useDispatch } from 'react-redux';
 
 const TaskBox = (props: any) => {
+  const dispatch = useDispatch();
+
   
-  
+  const deleteTask = (listId: string, taskId: string) => {
+    dispatch(
+      deleteTaskById({
+        listId: listId,
+        taskId: taskId
+      })
+    )
+  }
+
+  const toggleCheckbox = (isDone: boolean, taskId: string, listId: string) => {
+    dispatch(
+      toggleIsTaskDone({
+        done: !isDone,
+        taskId: taskId,
+        listId: listId
+      })
+    )
+  }
+
+
+
   const mappedTodos = props.todos.map((item: any) => {
     const date = new Date(item.deadline);
-    console.log(date.toDateString())
     return (
       <Box
         width='100%'
         border="1px solid #d4d4d4"
         borderRadius={1}
-        marginTop={3}
+        marginBottom={3}
         padding=".5em 0"
         display='flex'
         key={ item.taskId}
         > 
           <Box marginTop={2} marginX={.5}>
-            <Checkbox 
+            { item.done ?
+              <Checkbox 
+                checked={true}
+                onChange={() => toggleCheckbox(true, item.taskId, item.ListId)}
                 sx={{
                   '&.Mui-checked': {
                     color: '#262d32',
                 },
               }}
-            />
+              /> :
+              
+              <Checkbox 
+                checked={false}
+                onChange={() => toggleCheckbox(false, item.taskId, item.ListId)}
+                sx={{
+                  '&.Mui-checked': {
+                    color: '#262d32',
+                },
+              }}
+              />
+              
+            }
           </Box>
-          <Box marginRight={2} sx={{width: '100%'}}> 
+          <Box marginRight={2} marginBottom={2} sx={{width: '100%'}}> 
             <Box display='flex' justifyContent='space-between'>
               <h2 >{ item.taskName }</h2>
-              <Box display='flex' marginTop={1.5}>
+              <Box display='flex' justifyContent='space-between' minWidth={260} marginTop={1.5}>
                 <p><span style={{ fontWeight: 'bold'}}>End Date: </span>{ date.toDateString() }</p>
                 <Box>
-                  <IconButton sx={{mt: .8, ml: 2}} aria-label="delete"  color="primary">
+                  <IconButton 
+                    onClick={() => deleteTask(item.ListId, item.taskId)} 
+                    sx={{mt: .8, ml: 2}} 
+                    aria-label="delete" 
+                    color="primary"
+                    >
                     <DeleteIcon />
                   </IconButton>
                 </Box>
               </Box>
             </Box>
-            <p>{ item.plainText }</p>
+            <Typography>{ item.description }</Typography>
           </Box>
       </Box>
     )

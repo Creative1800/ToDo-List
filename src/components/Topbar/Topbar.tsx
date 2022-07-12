@@ -32,23 +32,20 @@ const Topbar = () => {
 
   useEffect(() => {
     dispatch(getListsAsync());
-
-    
   },[dispatch])
 
   useEffect(() => {
-    if(lists.length > 0) {
+    if(lists.find(item => Number(item.id) === tabsValue+1) === undefined && lists.length > 0) {
+      setTabsValue(prevState => prevState - 1)
+      navigate(`/lists/${Number(tabsValue)}`)
+    }
+  },[lists.length])
+
+  useEffect(() => {
+    if(lists.length > 0 && lists.find(item => Number(item.id) === tabsValue+1) !== undefined) {
       setActiveTabName((lists[tabsValue].listName).toUpperCase())
     }
   }, [lists.length, tabsValue])
-
-  /* useEffect(() => {
-    axios.get('https://62c88f300f32635590da738f.mockapi.io/Lists')
-    .then(response => {
-      setLists(response.data)
-    })
-    .catch(err => console.log(err))
-  },[]) */
 
   const listsNames = lists.map((item: any) => {
     return (
@@ -108,8 +105,13 @@ const Topbar = () => {
         >
           <Box display='flex' justifyContent='space-between' paddingBottom={1}>
             <h2 style={{ margin: 0}}>{ activeTabName }</h2>
-            <Button onClick={deleteList} variant="outlined" startIcon={<DeleteIcon />}>
-              Delete
+            <Button 
+              onClick={deleteList} 
+              variant="outlined" 
+              startIcon={<DeleteIcon />}
+              color='error'
+              >
+              Delete List
             </Button>
           </Box>
         <Divider style={{width:'100%'}}/>

@@ -65,7 +65,6 @@ const AddList = () => {
             label="List Name"
             type="text"
             fullWidth
-            required
             variant="standard"
             inputProps={{ maxLength: 20 }}
             value={listName}
