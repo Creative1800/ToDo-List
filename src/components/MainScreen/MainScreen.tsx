@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getTodosByListId } from '../../redux/features/todoSlice';
 import TaskBox from '../TaskBox/TaskBox';
 import AddTask from '../AddTask/AddTask';
+import { SelectChangeEvent } from '@mui/material';
 
 
 const MainScreen = () => {
@@ -15,9 +16,9 @@ const MainScreen = () => {
   const todos = useSelector((state: any) => state.todos);
   const [ filterValue, setFilterValue ] = useState('10');
 
-  const changeFilterValue = (value: string) => {
-    setFilterValue(value)
-  }
+  const changeFilterValue = (event: SelectChangeEvent) => {
+      setFilterValue(event.target.value as string);
+  };
 
 
   useEffect(() => {
@@ -44,7 +45,10 @@ const MainScreen = () => {
           <AddTask />
         </Box>
       </Box>
-      <TaskBox todos={ todos } />
+      <TaskBox 
+        todos={ todos } 
+        filterValue={filterValue}
+        />
     </>
   );
 }

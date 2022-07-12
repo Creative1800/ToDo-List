@@ -4,17 +4,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { filterTodos } from '../../redux/features/todoSlice';
 
 
-const ItemsFilter = () => {
-  const [filterValue, setFilterValue] = React.useState('10');
+const ItemsFilter = (props: any) => {
+  //const [filterValue, setFilterValue] = React.useState('10');
   const todos = useSelector((state: any) => state.todos);
-
-  console.log(todos)
-
-  const handleChange = (event: SelectChangeEvent) => {
-    setFilterValue(event.target.value as string);
-  };
-
-
 
   return (
     <>
@@ -22,8 +14,8 @@ const ItemsFilter = () => {
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={filterValue}
-          onChange={handleChange}
+          value={props.filterValue}
+          onChange={props.changeFilterValue}
         >
           <MenuItem value={10}>All</MenuItem>
           <MenuItem value={20}>Active</MenuItem>

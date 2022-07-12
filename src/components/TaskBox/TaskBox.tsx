@@ -28,9 +28,18 @@ const TaskBox = (props: any) => {
     )
   }
 
+  const filteredTodos = () => {
+    switch (props.filterValue) {
+      case 30:
+        return props.todos.filter((item: {done: boolean}) => item.done === true)
+      case 20:
+        return props.todos.filter((item: {done: boolean}) => item.done === false)
+      default:
+        return props.todos
+    }
+  }
 
-
-  const mappedTodos = props.todos.map((item: any) => {
+  const mappedTodos = filteredTodos().map((item: any) => {
     const date = new Date(item.deadline);
     return (
       <Box
