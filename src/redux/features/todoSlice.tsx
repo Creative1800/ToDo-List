@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-export const getTodosByListId: any = createAsyncThunk( // nahradit axiosom
+export const getTodosByListId: any = createAsyncThunk(
 	'todo/getTodosByListId',
 	async (payload: any) => {
 		let lists = {}

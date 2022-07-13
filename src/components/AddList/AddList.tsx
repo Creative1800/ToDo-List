@@ -1,17 +1,16 @@
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add';
-import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { addListAsync } from '../../redux/features/listsSlice';
 
 
 const AddList = () => {
-  const [open, setOpen] = useState(false);
-  const [listName, setListName] = useState('')
-  const [isButtonDisabled, setIsButtonDisabled] = useState(true)
+  const dispatch = useDispatch();
 
-  const dispatch = useDispatch() 
+  const [open, setOpen] = useState(false);
+  const [listName, setListName] = useState('');
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
   useEffect(() => {
     listName.length > 0 ? setIsButtonDisabled(false) : setIsButtonDisabled(true)
@@ -28,12 +27,6 @@ const AddList = () => {
   const handleSubmit = (): void => {
     setOpen(false);
     
-    /* axios.post('https://62c88f300f32635590da738f.mockapi.io/Lists', {
-      "listName": listName,
-      "tasks": []
-    })
-    .then(res => console.log(res)) */
-
     dispatch(
       addListAsync({
         listName: listName,

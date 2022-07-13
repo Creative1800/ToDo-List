@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import { SyntheticEvent, useEffect, useState } from 'react';
 import { Box } from '@mui/system';
-import { Button, Divider, Tab, Tabs, tabsClasses} from '@mui/material';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Button, Divider, Tab, Tabs, tabsClasses, Typography} from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import AddList from '../AddList/AddList';
 import { useSelector, useDispatch } from 'react-redux';
 import { getListsAsync } from '../../redux/features/listsSlice';
@@ -12,24 +12,16 @@ import { deleteListById } from '../../redux/features/listsSlice'
 const Topbar = () => {
   const dispatch = useDispatch();
   let navigate = useNavigate();
+  
+  const listId:number = Number(
+    window.location.pathname.charAt(window.location.pathname.length - 1)
+  );
   const lists: (Array<{"listName": "","tasks": [],"id": ""}>) = useSelector((state: any) => state.lists);
+  
   const [ activeTabName, setActiveTabName ] = useState("");
-
-  const listId:number = Number(window.location.pathname.charAt(window.location.pathname.length - 1));
   const [tabsValue, setTabsValue] = useState(listId ? listId - 1 : 0);
   
-  const handleTabsChange = (event: React.SyntheticEvent, newValue: number) => {
-    setTabsValue(newValue);
-  };
-
-  const deleteList = () => {
-    dispatch(
-      deleteListById({
-        listId: (tabsValue + 1),
-    }))
-  }
-
-
+  
   useEffect(() => {
     dispatch(getListsAsync());
   },[dispatch])
@@ -42,19 +34,32 @@ const Topbar = () => {
   },[lists.length])
 
   useEffect(() => {
-    if(lists.length > 0 && lists.find(item => Number(item.id) === tabsValue+1) !== undefined) {
-      setActiveTabName((lists[tabsValue].listName).toUpperCase())
+    if(lists.length > 0 && lists.find(
+      (item) => Number(item.id) === listId) !== undefined) {
+        setActiveTabName((lists[tabsValue].listName).toUpperCase())
     }
-  }, [lists.length, tabsValue])
+  }, [lists.length, listId, tabsValue])
 
-  const listsNames = lists.map((item: any) => {
-    return (
-      <Tab 
-        key={item.id}
-        label={item.listName}
-        onClick={() => navigate(`/lists/${Number(item.id)}`)}
-      />
-    )
+  const handleTabsChange = (event: SyntheticEvent, newValue: number) => {
+    setTabsValue(newValue);
+  };
+
+  const deleteList = () => {
+    dispatch(
+      deleteListById({
+        listId: (listId),
+    }))
+  }
+
+  const listsNames = lists.map(
+    (item: {id: string, listName: string}) => {
+      return (
+        <Tab 
+          key={item.id}
+          label={item.listName}
+          onClick={() => navigate(`/lists/${Number(item.id)}`)}
+        />
+      )
   })
 
 
@@ -67,7 +72,6 @@ const Topbar = () => {
           display='flex'
           justifyContent='center'
         >
-
         <Box 
           display="flex"
           justifyContent="space-between"
@@ -104,7 +108,13 @@ const Topbar = () => {
         marginTop='2em'
         >
           <Box display='flex' justifyContent='space-between' paddingBottom={1}>
-            <h2 style={{ margin: 0}}>{ activeTabName }</h2>
+            <Typography 
+              variant='h4' 
+              fontWeight='bold' 
+              style={{margin: 0}}
+              >
+              { activeTabName }
+            </Typography>
             <Button 
               onClick={deleteList} 
               variant="outlined" 

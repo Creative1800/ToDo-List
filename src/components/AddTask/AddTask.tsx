@@ -8,6 +8,8 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { addTodo } from '../../redux/features/todoSlice';
 
 const AddTask = () => {
+  const dispatch = useDispatch();
+  
   const [open, setOpen] = useState(false);
   const [todoName, setTodoName] = useState('');
   const [taskDescription, setTaskDescription] = useState('');
@@ -15,7 +17,6 @@ const AddTask = () => {
   const [dateValue, setDateValue] = useState<Date | null>(null)
   const listId: string = window.location.pathname[window.location.pathname.length - 1];
 
-  const dispatch = useDispatch()
   
   useEffect(() => {
     todoName.length > 0 && dateValue !== null ? setIsButtonDisabled(false) : setIsButtonDisabled(true)
@@ -79,7 +80,6 @@ const AddTask = () => {
             }}
           />
           <TextField
-            id="outlined-multiline-static"
             label="Task Description"
             value={taskDescription}
             fullWidth

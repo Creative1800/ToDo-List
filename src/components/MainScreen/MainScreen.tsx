@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { Box } from '@mui/system';
 import ItemsFilter from '../ItemsFilter/ItemsFilter';
 import Searchbar from '../Searchbar/Searchbar';
@@ -14,10 +14,17 @@ const MainScreen = () => {
   const params = useParams();
   const dispatch = useDispatch();
   const todos = useSelector((state: any) => state.todos);
+  
   const [ filterValue, setFilterValue ] = useState('10');
   const [searchValue, setSearchValue] = useState('');
 
-
+  useEffect(() => {
+    dispatch(
+      getTodosByListId({
+        id: params.id,
+    }))
+  },[dispatch, params.id, todos.length])
+    
   const changeFilterValue = (event: SelectChangeEvent) => {
       setFilterValue(event.target.value as string);
   };
@@ -26,13 +33,6 @@ const MainScreen = () => {
     setSearchValue(event.target.value);
   };
   
-  useEffect(() => {
-    dispatch(
-      getTodosByListId({
-        id: params.id,
-    }))
-  },[dispatch, params.id, todos.length])
-
   return (
     <>
       <Box 

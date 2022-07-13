@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from 'axios';
 
-export const getListsAsync: any = createAsyncThunk( // nahradit axiosom
+export const getListsAsync: any = createAsyncThunk(
 	'lists/getLists',
 	async () => {
 		let lists = {}
@@ -13,7 +13,7 @@ export const getListsAsync: any = createAsyncThunk( // nahradit axiosom
 
 export const addListAsync: any = createAsyncThunk(
   'lists/addLists',
-  async (payload: any) => {
+  async (payload: {listName: string}) => {
     let list = {}
     await axios.post('https://62c88f300f32635590da738f.mockapi.io/Lists',{
       "listName": payload.listName, 
@@ -39,20 +39,19 @@ const listSlice = createSlice({
   initialState: [],
   reducers: {},
   extraReducers: {
-    [getListsAsync.fulfilled as any]: (state: any, action: any) => {
+    [getListsAsync.fulfilled]: (state: any, action: any) => {
       return action.payload.lists;
     },
-    [addListAsync.fulfilled as any]: (state: any, action: any) => {
-      console.log(state)
+    [addListAsync.fulfilled]: (state: any, action: any) => {
       state.push(action.payload.list)
     },
-    [deleteListById.fulfilled as any]: (state: any, action: any) => {
-      return state.filter((list: {"id": number}) => list.id !== action.payload)
+    [deleteListById.fulfilled]: (state: any, action: any) => {
+      return state.filter(
+        (list: {"id": number}) => list.id !== action.payload
+      )
     },
     
   }
 })
-
-//export const { addList } = listSlice.actions;
 
 export default listSlice.reducer;

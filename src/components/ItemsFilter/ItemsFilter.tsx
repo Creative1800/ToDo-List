@@ -6,8 +6,6 @@ const ItemsFilter = (props: any) => {
     <>
       <FormControl sx={{ minWidth: 150, marginX: 2 }}>
         <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
           value={props.filterValue}
           onChange={props.changeFilterValue}
         >

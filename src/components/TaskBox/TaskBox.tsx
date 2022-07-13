@@ -1,5 +1,4 @@
-import { Box } from '@mui/system'
-import React from 'react'
+import { Box } from '@mui/system';
 import { Checkbox, IconButton, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { deleteTaskById, toggleIsTaskDone } from '../../redux/features/todoSlice';
@@ -8,7 +7,6 @@ import { useDispatch } from 'react-redux';
 const TaskBox = (props: any) => {
   const dispatch = useDispatch();
 
-  
   const deleteTask = (listId: string, taskId: string) => {
     dispatch(
       deleteTaskById({
@@ -92,35 +90,35 @@ const TaskBox = (props: any) => {
                     onClick={() => deleteTask(item.ListId, item.taskId)} 
                     sx={{mt: .8, ml: 2}} 
                     aria-label="delete" 
-                    color="primary"
+                    color="error"
                     >
                     <DeleteIcon />
                   </IconButton>
                 </Box>
               </Box>
             </Box>
-            <Typography>{ item.description }</Typography>
+            <Box>
+              <Typography>{ item.description }</Typography>
+            </Box>
           </Box>
       </Box>
     )
   })
 
-  const noTasksYet = () => {
-    return (
+  return (
+    <>
+      { 
+      mappedTodos.length > 0 ? 
+      mappedTodos : 
       <Box
         width='100%'
         borderRadius={1}
         marginTop={3}
         padding=".5em 0"
         >
-        <Typography variant='h4'>{'No tasks!'.toUpperCase()}</Typography>
+        <Typography variant='h5'>{'No tasks!'.toUpperCase()}</Typography>
       </Box>
-    )
-  }
-
-  return (
-    <>
-      { mappedTodos.length > 0 ? mappedTodos : noTasksYet()}
+      }
     </>
   )
 }
