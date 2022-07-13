@@ -1,5 +1,4 @@
 
-import './App.css';
 import MainScreen from './components/MainScreen/MainScreen';
 import Topbar from './components/Topbar/Topbar';
 import { createTheme } from '@mui/material/styles';

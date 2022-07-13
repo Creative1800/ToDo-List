@@ -40,7 +40,8 @@ const TaskBox = (props: any) => {
   const searchedTodos = () => {
     if ( props.filterValue === '' ) return filteredTodos()
     return filteredTodos().filter(
-      (item: {taskName: string}) => item.taskName.includes(props.searchValue)
+      (item: {taskName: string}) => 
+        item.taskName.toLowerCase().includes((props.searchValue).toLowerCase())
     )
   }
 

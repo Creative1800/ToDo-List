@@ -6,8 +6,8 @@ const ItemsFilter = (props: any) => {
     <>
       <FormControl sx={{ minWidth: 150, marginX: 2 }}>
         <Select
-          value={props.filterValue}
-          onChange={props.changeFilterValue}
+          value={ props.filterValue }
+          onChange={ props.changeFilterValue }
         >
           <MenuItem value={10}>All</MenuItem>
           <MenuItem value={20}>Active</MenuItem>

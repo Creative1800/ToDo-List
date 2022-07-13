@@ -49,8 +49,7 @@ const listSlice = createSlice({
       return state.filter(
         (list: {"id": number}) => list.id !== action.payload
       )
-    },
-    
+    }
   }
 })
 

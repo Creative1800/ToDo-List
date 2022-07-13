@@ -16,7 +16,7 @@ const MainScreen = () => {
   const todos = useSelector((state: any) => state.todos);
   
   const [ filterValue, setFilterValue ] = useState('10');
-  const [searchValue, setSearchValue] = useState('');
+  const [ searchValue, setSearchValue ] = useState('');
 
   useEffect(() => {
     dispatch(
@@ -41,11 +41,11 @@ const MainScreen = () => {
         >
         <Box width='100%' marginBottom={3}>
           <Searchbar 
-            searchValue={searchValue}
+            searchValue={ searchValue }
             handleSearchValueChange={handleSearchValueChange}
           />
           <ItemsFilter 
-            filterValue={filterValue}
+            filterValue={ filterValue }
             changeFilterValue={changeFilterValue}
           />
         </Box>
@@ -55,8 +55,8 @@ const MainScreen = () => {
       </Box>
       <TaskBox 
         todos={ todos } 
-        filterValue={filterValue}
-        searchValue={searchValue}
+        filterValue={ filterValue }
+        searchValue={ searchValue }
         />
     </>
   );

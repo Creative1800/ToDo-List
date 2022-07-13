@@ -17,7 +17,6 @@ const AddTask = () => {
   const [dateValue, setDateValue] = useState<Date | null>(null)
   const listId: string = window.location.pathname[window.location.pathname.length - 1];
 
-  
   useEffect(() => {
     todoName.length > 0 && dateValue !== null ? setIsButtonDisabled(false) : setIsButtonDisabled(true)
   },[todoName, dateValue])
