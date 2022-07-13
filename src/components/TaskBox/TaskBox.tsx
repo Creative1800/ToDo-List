@@ -39,7 +39,14 @@ const TaskBox = (props: any) => {
     }
   }
 
-  const mappedTodos = filteredTodos().map((item: any) => {
+  const searchedTodos = () => {
+    if ( props.filterValue === '' ) return filteredTodos()
+    return filteredTodos().filter(
+      (item: {taskName: string}) => item.taskName.includes(props.searchValue)
+    )
+  }
+
+  const mappedTodos = searchedTodos().map((item: any) => {
     const date = new Date(item.deadline);
     return (
       <Box
@@ -106,7 +113,7 @@ const TaskBox = (props: any) => {
         marginTop={3}
         padding=".5em 0"
         >
-        <p>No tasks yet!</p>
+        <Typography variant='h4'>{'No tasks!'.toUpperCase()}</Typography>
       </Box>
     )
   }

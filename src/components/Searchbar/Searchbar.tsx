@@ -1,22 +1,17 @@
 import { TextField } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 
 
 
-const Searchbar = () => {
+const Searchbar = (props: any) => {
   
-  const [name, setName] = React.useState('');
-  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setName(event.target.value);
-  };
-
   return (
     <>
       <TextField
         id="outlined-name"
         label="Search for..."
-        value={name}
-        onChange={handleNameChange}
+        value={props.searchValue}
+        onChange={props.handleSearchValueChange}
       />
     </>
   );

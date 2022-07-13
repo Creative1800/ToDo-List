@@ -1,68 +1,38 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from 'axios';
 
-/* export const getTodosAsync: any = createAsyncThunk(
-  'todos/getTodosAsync',
-  async () => {
-    await axios.get('https://62c88f300f32635590da738f.mockapi.io/Lists')
-    .then(response => {
-      return response.data
-    })
-  }
-) */
-
 export const getListsAsync: any = createAsyncThunk( // nahradit axiosom
 	'lists/getLists',
 	async () => {
-		const resp = await fetch('https://62c88f300f32635590da738f.mockapi.io/Lists');
-		if (resp.ok) {
-			const lists = await resp.json();
-			return { lists };
-		}
+		let lists = {}
+    await axios.get('https://62c88f300f32635590da738f.mockapi.io/Lists')
+		.then(res => lists = res.data)
+    return { lists }
 	}
 );
-
-
-
-/* axios.post('https://62c88f300f32635590da738f.mockapi.io/Lists', {
-      "listName": listName,
-      "tasks": []
-    })
-    .then(res => console.log(res)) */
 
 export const addListAsync: any = createAsyncThunk(
   'lists/addLists',
   async (payload: any) => {
-    const response = await fetch('https://62c88f300f32635590da738f.mockapi.io/Lists',{
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({"listName": payload.listName, tasks: []})
+    let list = {}
+    await axios.post('https://62c88f300f32635590da738f.mockapi.io/Lists',{
+      "listName": payload.listName, 
+      tasks: []
     })
-    if(response.ok) {
-      const list = await response.json();
-      return { list }
-    }
+    .then(res => list = res.data)
+    return { list }
   }
 )
 
 export const deleteListById: any = createAsyncThunk(
   'lists/deleteListById',
   async (payload: {"listId": number}) => {
-    const response = await fetch(`https://62c88f300f32635590da738f.mockapi.io/Lists/${payload.listId}`,{
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    })
-    if(response.ok) {
-      const list = await response.json();
-      console.log(list)
-      return list.id 
-    }
+    let id = 0
+    await axios.delete(`https://62c88f300f32635590da738f.mockapi.io/Lists/${payload.listId}`)
+    .then(res => id = res.data.id)
+    return id
   }
-)
+) 
 
 const listSlice = createSlice({
   name: "lists",

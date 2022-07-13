@@ -1,12 +1,6 @@
-import React from 'react'
-import { Button, Divider, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, TextField } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
-import { filterTodos } from '../../redux/features/todoSlice';
-
+import { FormControl, MenuItem, Select } from '@mui/material';
 
 const ItemsFilter = (props: any) => {
-  //const [filterValue, setFilterValue] = React.useState('10');
-  const todos = useSelector((state: any) => state.todos);
 
   return (
     <>

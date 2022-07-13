@@ -1,85 +1,61 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 
 export const getTodosByListId: any = createAsyncThunk( // nahradit axiosom
 	'todo/getTodosByListId',
 	async (payload: any) => {
-		const resp = await fetch(`https://62c88f300f32635590da738f.mockapi.io/Lists/${payload.id}/task`);
-		if (resp.ok) {
-			const lists = await resp.json();
-			return { lists };
-		}
+		let lists = {}
+    await axios.get(`https://62c88f300f32635590da738f.mockapi.io/Lists/${payload.id}/task`)
+    .then(resp => lists = resp.data)
+    return { lists }
 	}
 );
 
 export const addTodo: any = createAsyncThunk(
   'todo/addTodo',
   async (payload: any) => {
-    const response = await fetch(`https://62c88f300f32635590da738f.mockapi.io/Lists/${payload.listId}/task`,{
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
+    let todo: any = {}
+    await axios.post(`https://62c88f300f32635590da738f.mockapi.io/Lists/${payload.listId}/task`,{
         "taskName": payload.todoName, 
         "description": payload.description,
         "done": false,
         "ListId": payload.listId,
         "deadline": payload.deadline
-      })
     })
-    if(response.ok) {
-      const todo = await response.json();
-      return { todo }
-    }
+    .then(response => todo = response.data)
+    return { todo }
   }
 )
 
 export const deleteTaskById: any = createAsyncThunk(
   'todo/deleteTaskById',
   async (payload: {'listId': string, 'taskId': string}) => {
-    const response = await fetch(`https://62c88f300f32635590da738f.mockapi.io/Lists/${payload.listId}/task/${payload.taskId}`,{
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    })
-    if(response.ok) {
-      const task = await response.json();
-      return task.taskId
-    }
+    let taskId: number = 0
+    await axios.delete(`https://62c88f300f32635590da738f.mockapi.io/Lists/${payload.listId}/task/${payload.taskId}`)
+    .then(res => taskId = res.data.taskId)
+    return taskId
   }
 )
 
 export const toggleIsTaskDone: any = createAsyncThunk(
   'todo/toggleIsTaskDone',
   async (payload: {'listId': string, 'taskId': string, 'done': boolean}) => {
-    const response = await fetch(`https://62c88f300f32635590da738f.mockapi.io/Lists/${payload.listId}/task/${payload.taskId}`,{
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({done: payload.done})
-    })
-    if(response.ok) {
-      const task = await response.json();
-      return {taskId: task.taskId, done: task.done}
+    let task: {taskId: string, done: boolean} = {
+      taskId:"", 
+      done:false
     }
+    await axios.put(`https://62c88f300f32635590da738f.mockapi.io/Lists/${payload.listId}/task/${payload.taskId}`,{
+      done: payload.done
+    })
+    .then(res => task = res.data)
+    return { taskId: task.taskId, done: task.done}
   }
 )
 
 const todoSlice = createSlice({
   name: "todos",
   initialState: [],
-  reducers: {
-    filterTodos: (state, action) => {
-      const filteredState = state.filter((item: {done: boolean}) => {
-        
-        
-      })
-
-      return filteredState
-    }
-  },
+  reducers: {},
   extraReducers: {
     [getTodosByListId.fulfilled as any]: (state: any, action: any) => {
       return action.payload.lists
@@ -98,7 +74,5 @@ const todoSlice = createSlice({
     }
   }
 })
-
-export const { filterTodos } = todoSlice.actions;
 
 export default todoSlice.reducer;
